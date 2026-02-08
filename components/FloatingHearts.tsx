@@ -6,41 +6,48 @@ interface HeartStyle {
   fontSize: string;
   animationDuration: string;
   animationDelay: string;
+  color: string;
+  opacity: number;
 }
 
 const FloatingHearts: React.FC = () => {
   const [hearts, setHearts] = useState<HeartStyle[]>([]);
 
   useEffect(() => {
-    const heartCount = 15;
+    const heartCount = 30; // More hearts for more cuteness
+    const colors = ['#ff4d6d', '#ff758f', '#ff8fa3', '#ffb3c1', '#ffccd5'];
     const newHearts: HeartStyle[] = [];
 
     for (let i = 0; i < heartCount; i++) {
       newHearts.push({
         id: i,
         left: Math.random() * 100 + 'vw',
-        fontSize: Math.random() * 20 + 20 + 'px',
-        animationDuration: Math.random() * 3 + 3 + 's',
-        animationDelay: Math.random() * 5 + 's',
+        fontSize: Math.random() * 25 + 15 + 'px',
+        animationDuration: Math.random() * 4 + 4 + 's',
+        animationDelay: Math.random() * 10 + 's',
+        color: colors[Math.floor(Math.random() * colors.length)],
+        opacity: Math.random() * 0.5 + 0.3,
       });
     }
     setHearts(newHearts);
   }, []);
 
   return (
-    <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+    <div className="fixed inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
       {hearts.map((heart) => (
         <div
           key={heart.id}
-          className="absolute top-[-10%] text-pink-300 opacity-0 animate-float"
+          className="absolute bottom-[-10%] animate-float select-none"
           style={{
             left: heart.left,
             fontSize: heart.fontSize,
+            color: heart.color,
+            opacity: heart.opacity,
             animationDuration: heart.animationDuration,
             animationDelay: heart.animationDelay,
           }}
         >
-          ❤
+          {Math.random() > 0.5 ? '❤️' : '💖'}
         </div>
       ))}
     </div>
